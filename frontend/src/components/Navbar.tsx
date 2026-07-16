@@ -78,9 +78,11 @@ export function Navbar() {
 
                 {/* Desktop & Mobile: Right Actions */}
                 <div className="flex items-center space-x-1 sm:space-x-3 md:flex-none">
-                    <Link href="/search" passHref legacyBehavior>
-                        <Button variant="ghost" size="icon" className="md:hidden">
-                            <Search className="w-5 h-5" />
+                    <Link href="/search" className="md:hidden">
+                        <Button variant="ghost" size="icon" asChild>
+                            <span>
+                                <Search className="w-5 h-5" />
+                            </span>
                         </Button>
                     </Link>
                     

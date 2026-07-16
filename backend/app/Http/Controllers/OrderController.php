@@ -55,6 +55,10 @@ class OrderController extends Controller
                 // Lock for update to prevent race conditions (for MVP we'll just check)
                 $variant = ProductVariant::lockForUpdate()->find($item['variant_id']);
 
+                if (!$variant) {
+                    throw new \Exception("Variant with ID {$item['variant_id']} not found. Please clear your cart and try again.");
+                }
+
                 if ($variant->stock < $item['quantity']) {
                     throw new \Exception("Insufficient stock for SKU: {$variant->sku}");
                 }
@@ -74,9 +78,9 @@ class OrderController extends Controller
                 $variant->save();
             }
 
-            // 2. Create Order
+            // 2. Create Order (Using auth('sanctum') to properly detect user if logged in)
             $order = Order::create([
-                'user_id' => $request->user()?->id,
+                'user_id' => auth('sanctum')->user()?->id,
                 'order_number' => 'ORD-' . strtoupper(Str::random(10)),
                 'customer_name' => $validated['customer_name'],
                 'customer_email' => $validated['customer_email'],
@@ -99,7 +103,7 @@ class OrderController extends Controller
                 'total_amount' => $order->total_amount,
             ], 'Order placed successfully.', 201);
 
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             DB::rollBack();
             return $this->error('Checkout failed: ' . $e->getMessage(), 422);
         }
