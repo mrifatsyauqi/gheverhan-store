@@ -44,8 +44,9 @@ export default function CommerceProductsAdmin() {
                 ]
             });
             await fetchProducts(); // Refresh the list
-        } catch (error) {
+        } catch (error: any) {
             console.error("Failed to add dummy product", error);
+            alert("Error: " + (error.response?.data?.message || error.message));
             setLoading(false);
         }
     };
