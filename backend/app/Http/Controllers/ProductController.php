@@ -18,9 +18,10 @@ class ProductController extends Controller
         $this->productService = $productService;
     }
 
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
-        $products = $this->productService->getPublishedProducts();
+        $search = $request->query('q');
+        $products = $this->productService->getPublishedProducts($search);
         return $this->success($products, 'Products retrieved successfully.');
     }
 

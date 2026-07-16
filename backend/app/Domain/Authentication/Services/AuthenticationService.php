@@ -15,34 +15,46 @@ class AuthenticationService
      * @param array $data
      * @return User
      */
-    public function registerUser(array $data): User
+    public function registerUser(array $data): array
     {
-        return User::create([
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        return [
+            'user' => $user,
+            'access_token' => $token,
+            'token_type' => 'Bearer',
+        ];
     }
 
     /**
      * Authenticate a user with email and password.
      *
      * @param array $credentials
-     * @return User
+     * @return array
      * @throws ValidationException
      */
-    public function authenticateUser(array $credentials): User
+    public function authenticateUser(array $credentials): array
     {
         if (!Auth::attempt($credentials)) {
             throw ValidationException::withMessages([
-                'email' => ['Invalid credentials.'],
+                'email' => ['Kredensial yang diberikan tidak cocok dengan catatan kami.'],
             ]);
         }
 
-        /** @var User $user */
         $user = Auth::user();
-        
-        return $user;
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        return [
+            'user' => $user,
+            'access_token' => $token,
+            'token_type' => 'Bearer',
+        ];
     }
 
     /**
@@ -52,6 +64,8 @@ class AuthenticationService
      */
     public function logoutUser(): void
     {
-        Auth::guard('web')->logout();
+        if (Auth::check()) {
+            Auth::user()->currentAccessToken()->delete();
+        }
     }
 }

@@ -11,11 +11,15 @@ export const apiClient = axios.create({
   withCredentials: true, // Required for Sanctum cookie-based auth
 });
 
-// Request interceptor to attach CSRF token if needed
+import { useAuthStore } from '@/store/auth-store';
+
+// Request interceptor to attach token
 apiClient.interceptors.request.use(
   async (config: InternalAxiosRequestConfig) => {
-    // If you need to hit sanctum/csrf-cookie manually before non-GET requests:
-    // This is often done at the app init or login phase rather than every request.
+    const token = useAuthStore.getState().token;
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
     return config;
   },
   (error) => Promise.reject(error)
@@ -26,7 +30,8 @@ apiClient.interceptors.response.use(
   (response) => response,
   (error: AxiosError) => {
     if (error.response?.status === 401) {
-      // Handle unauthenticated (e.g., redirect to login or clear state)
+      // Handle unauthenticated
+      useAuthStore.getState().clearAuth();
       if (typeof window !== 'undefined' && !window.location.pathname.includes('/login')) {
         window.location.href = '/login';
       }
