@@ -2,56 +2,43 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Domain\Authentication\Requests\LoginRequest;
+use App\Domain\Authentication\Requests\RegisterRequest;
+use App\Domain\Authentication\Services\AuthenticationService;
 use App\Traits\ApiResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
     use ApiResponse;
 
-    public function register(Request $request): JsonResponse
-    {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
-        ]);
+    protected AuthenticationService $authService;
 
-        $user = User::create([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'password' => Hash::make($validated['password']),
-        ]);
+    public function __construct(AuthenticationService $authService)
+    {
+        $this->authService = $authService;
+    }
+
+    public function register(RegisterRequest $request): JsonResponse
+    {
+        $user = $this->authService->registerUser($request->validated());
 
         return $this->success($user, 'User registered successfully.', 201);
     }
 
-    public function login(Request $request): JsonResponse
+    public function login(LoginRequest $request): JsonResponse
     {
-        $validated = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
-
-        if (!Auth::attempt($validated)) {
-            throw ValidationException::withMessages([
-                'email' => ['Invalid credentials.'],
-            ]);
-        }
+        $user = $this->authService->authenticateUser($request->validated());
 
         $request->session()->regenerate();
 
-        return $this->success(Auth::user(), 'Login successful.');
+        return $this->success($user, 'Login successful.');
     }
 
     public function logout(Request $request): JsonResponse
     {
-        Auth::guard('web')->logout();
+        $this->authService->logoutUser();
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
