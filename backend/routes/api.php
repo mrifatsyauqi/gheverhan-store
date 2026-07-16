@@ -23,6 +23,12 @@ Route::prefix('v1/builder')->group(function () {
     Route::get('/theme/active', [\App\Http\Controllers\ThemeController::class, 'getActive']);
 });
 
+// Public Commerce Routes
+Route::prefix('v1/commerce')->group(function () {
+    Route::get('/products', [\App\Http\Controllers\ProductController::class, 'index']);
+    Route::get('/products/{slug}', [\App\Http\Controllers\ProductController::class, 'show']);
+});
+
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/user', function (Request $request) {
         return response()->json([
@@ -48,5 +54,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::prefix('v1/builder')->group(function () {
         Route::post('/theme', [\App\Http\Controllers\ThemeController::class, 'store']);
+    });
+
+    // Admin Commerce Routes
+    Route::prefix('v1/commerce/admin')->group(function () {
+        Route::post('/products', [\App\Http\Controllers\ProductController::class, 'store']);
     });
 });
