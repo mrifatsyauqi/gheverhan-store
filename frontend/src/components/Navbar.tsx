@@ -55,9 +55,11 @@ export function Navbar() {
                     <Button variant="ghost" size="icon">
                         <Bell className="w-5 h-5" />
                     </Button>
-                    <Button variant="ghost" size="icon" className="hidden sm:inline-flex">
-                        <User className="w-5 h-5" />
-                    </Button>
+                    <Link href="/account" passHref legacyBehavior>
+                        <Button variant="ghost" size="icon" className="hidden sm:inline-flex">
+                            <User className="w-5 h-5" />
+                        </Button>
+                    </Link>
                     <Button variant="ghost" size="icon" className="relative md:hidden" onClick={toggleCart}>
                         <ShoppingCart className="w-5 h-5" />
                         {getTotalItems() > 0 && (

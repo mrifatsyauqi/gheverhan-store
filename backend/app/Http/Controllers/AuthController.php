@@ -22,26 +22,21 @@ class AuthController extends Controller
 
     public function register(RegisterRequest $request): JsonResponse
     {
-        $user = $this->authService->registerUser($request->validated());
+        $data = $this->authService->registerUser($request->validated());
 
-        return $this->success($user, 'User registered successfully.', 201);
+        return $this->success($data, 'User registered successfully.', 201);
     }
 
     public function login(LoginRequest $request): JsonResponse
     {
-        $user = $this->authService->authenticateUser($request->validated());
+        $data = $this->authService->authenticateUser($request->validated());
 
-        $request->session()->regenerate();
-
-        return $this->success($user, 'Login successful.');
+        return $this->success($data, 'Login successful.');
     }
 
     public function logout(Request $request): JsonResponse
     {
         $this->authService->logoutUser();
-
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
 
         return $this->success(null, 'Logged out successfully.');
     }
