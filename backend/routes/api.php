@@ -36,6 +36,28 @@ Route::prefix('v1/commerce/admin')->group(function () {
     Route::post('/products', [\App\Http\Controllers\ProductController::class, 'store']);
 });
 
+Route::get('/v1/seed-dummy-product', function () {
+    $service = app(\App\Domain\Commerce\Services\ProductCatalogService::class);
+    $randomId = rand(1000, 9999);
+    $product = $service->createProduct([
+        'name' => 'Dummy Product ' . $randomId,
+        'slug' => 'dummy-product-' . $randomId,
+        'description' => 'This is an awesome dummy product generated from the backend.',
+        'status' => 'published',
+        'seo_metadata' => [
+            'og_image' => 'https://picsum.photos/seed/' . $randomId . '/400/400'
+        ],
+        'variants' => [
+            [
+                'sku' => 'SKU-' . $randomId,
+                'price' => rand(100000, 500000),
+                'stock' => rand(10, 100)
+            ]
+        ]
+    ]);
+    return response()->json(['success' => true, 'message' => 'Product seeded!', 'data' => $product]);
+});
+
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/user', function (Request $request) {
         return response()->json([
