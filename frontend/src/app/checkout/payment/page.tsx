@@ -50,7 +50,8 @@ export default function PaymentPage() {
             router.push(`/checkout/success?order_number=${response.order_number}`);
         } catch (err: any) {
             console.error(err);
-            alert('Terjadi kesalahan saat memproses pesanan.');
+            const errorMessage = err.response?.data?.message || 'Terjadi kesalahan saat memproses pesanan.';
+            alert(errorMessage);
         } finally {
             setLoading(false);
         }
