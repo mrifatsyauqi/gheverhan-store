@@ -25,6 +25,8 @@ Route::prefix('v1/builder')->group(function () {
 
 // Public Commerce Routes
 Route::prefix('v1/commerce')->group(function () {
+    Route::get('/categories', [\App\Http\Controllers\CategoryController::class, 'index']);
+    Route::get('/categories/{slug}', [\App\Http\Controllers\CategoryController::class, 'show']);
     Route::get('/products', [\App\Http\Controllers\ProductController::class, 'index']);
     Route::get('/products/{slug}', [\App\Http\Controllers\ProductController::class, 'show']);
     Route::post('/cart/validate', [\App\Http\Controllers\CartController::class, 'validateCart']);
@@ -74,6 +76,15 @@ Route::middleware(['auth:sanctum'])->group(function () {
         ->name('verification.send');
     Route::get('/email/verify/{id}/{hash}', [\App\Http\Controllers\EmailVerificationController::class, 'verify'])
         ->name('verification.verify');
+
+    // Customer Routes
+    Route::get('/customer/wishlist', [\App\Http\Controllers\WishlistController::class, 'index']);
+    Route::post('/customer/wishlist/{productId}', [\App\Http\Controllers\WishlistController::class, 'store']);
+    Route::delete('/customer/wishlist/{productId}', [\App\Http\Controllers\WishlistController::class, 'destroy']);
+    
+    Route::get('/customer/addresses', [\App\Http\Controllers\AddressController::class, 'index']);
+    Route::post('/customer/addresses', [\App\Http\Controllers\AddressController::class, 'store']);
+    Route::delete('/customer/addresses/{id}', [\App\Http\Controllers\AddressController::class, 'destroy']);
 
     // Admin CMS & Builder Routes
     Route::prefix('v1/cms')->group(function () {
