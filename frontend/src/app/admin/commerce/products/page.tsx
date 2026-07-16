@@ -8,26 +8,53 @@ export default function CommerceProductsAdmin() {
     const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        const fetchProducts = async () => {
-            try {
-                const data = await productService.getProducts();
-                setProducts(data);
-            } catch (error) {
-                console.error("Failed to fetch products", error);
-            } finally {
-                setLoading(false);
-            }
-        };
+    const fetchProducts = async () => {
+        try {
+            const data = await productService.getProducts();
+            setProducts(data);
+        } catch (error) {
+            console.error("Failed to fetch products", error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
+    useEffect(() => {
         fetchProducts();
     }, []);
+
+    const handleAddDummyProduct = async () => {
+        setLoading(true);
+        try {
+            const randomId = Math.floor(Math.random() * 1000);
+            await productService.createProduct({
+                name: `Dummy Product ${randomId}`,
+                slug: `dummy-product-${randomId}`,
+                description: 'This is an awesome dummy product for testing.',
+                status: 'published',
+                seo_metadata: {
+                    og_image: `https://picsum.photos/seed/${randomId}/400/400`
+                },
+                variants: [
+                    {
+                        sku: `SKU-${randomId}`,
+                        price: 150000 + (Math.random() * 50000),
+                        stock: 10
+                    }
+                ]
+            });
+            await fetchProducts(); // Refresh the list
+        } catch (error) {
+            console.error("Failed to add dummy product", error);
+            setLoading(false);
+        }
+    };
 
     return (
         <div className="p-8">
             <div className="flex justify-between items-center mb-6">
                 <h1 className="text-2xl font-bold">Product Catalog</h1>
-                <Button>Add New Product</Button>
+                <Button onClick={handleAddDummyProduct} disabled={loading}>Add Dummy Product</Button>
             </div>
             
             {loading ? (
