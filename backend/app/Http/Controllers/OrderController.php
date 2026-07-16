@@ -16,6 +16,19 @@ class OrderController extends Controller
     use ApiResponse;
 
     /**
+     * Get user's orders
+     */
+    public function index(Request $request): JsonResponse
+    {
+        $orders = Order::with('items.variant.product')
+            ->where('user_id', $request->user()->id)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return $this->success($orders, 'Orders fetched successfully.');
+    }
+
+    /**
      * Handle the checkout process (create order).
      */
     public function checkout(Request $request): JsonResponse
@@ -63,6 +76,7 @@ class OrderController extends Controller
 
             // 2. Create Order
             $order = Order::create([
+                'user_id' => $request->user()?->id,
                 'order_number' => 'ORD-' . strtoupper(Str::random(10)),
                 'customer_name' => $validated['customer_name'],
                 'customer_email' => $validated['customer_email'],

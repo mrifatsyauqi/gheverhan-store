@@ -78,6 +78,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         ->name('verification.verify');
 
     // Customer Routes
+    Route::get('/customer/orders', [\App\Http\Controllers\OrderController::class, 'index']);
     Route::get('/customer/wishlist', [\App\Http\Controllers\WishlistController::class, 'index']);
     Route::post('/customer/wishlist/{productId}', [\App\Http\Controllers\WishlistController::class, 'store']);
     Route::delete('/customer/wishlist/{productId}', [\App\Http\Controllers\WishlistController::class, 'destroy']);
