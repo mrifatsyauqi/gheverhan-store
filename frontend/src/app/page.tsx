@@ -38,14 +38,14 @@ export default function Home() {
   };
 
   const categories = [
-      { name: 'Semua', image: 'https://via.placeholder.com/80?text=All' },
-      { name: 'Daster', image: 'https://via.placeholder.com/80?text=Daster' },
-      { name: 'Setelan', image: 'https://via.placeholder.com/80?text=Setelan' },
-      { name: 'Tunik', image: 'https://via.placeholder.com/80?text=Tunik' },
-      { name: 'Dress', image: 'https://via.placeholder.com/80?text=Dress' },
-      { name: 'Atasan', image: 'https://via.placeholder.com/80?text=Atasan' },
-      { name: 'Bawahan', image: 'https://via.placeholder.com/80?text=Bawahan' },
-      { name: 'Outer', image: 'https://via.placeholder.com/80?text=Outer' },
+      { name: 'Semua', image: 'https://placehold.co/80x80/eeeeee/999999?text=All' },
+      { name: 'Daster', image: 'https://placehold.co/80x80/eeeeee/999999?text=Daster' },
+      { name: 'Setelan', image: 'https://placehold.co/80x80/eeeeee/999999?text=Setelan' },
+      { name: 'Tunik', image: 'https://placehold.co/80x80/eeeeee/999999?text=Tunik' },
+      { name: 'Dress', image: 'https://placehold.co/80x80/eeeeee/999999?text=Dress' },
+      { name: 'Atasan', image: 'https://placehold.co/80x80/eeeeee/999999?text=Atasan' },
+      { name: 'Bawahan', image: 'https://placehold.co/80x80/eeeeee/999999?text=Bawahan' },
+      { name: 'Outer', image: 'https://placehold.co/80x80/eeeeee/999999?text=Outer' },
   ];
 
   return (
@@ -62,7 +62,7 @@ export default function Home() {
             <div className="w-1/2 h-full bg-[#111111]"></div>
             <div className="w-1/2 h-full">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="https://via.placeholder.com/800x600/111111/444444?text=Hero+Image" alt="Hero Model" className="object-cover w-full h-full opacity-80" />
+              <img src="https://placehold.co/800x600/111111/444444?text=Hero+Image" alt="Hero Model" className="object-cover w-full h-full opacity-80" />
             </div>
           </div>
           <div className="absolute inset-0 flex flex-col justify-center p-6 md:p-12 max-w-7xl mx-auto w-full">
@@ -126,7 +126,7 @@ export default function Home() {
                 <div key={i} className="min-w-[160px] md:min-w-[220px] snap-start border border-gray-100 p-2 group cursor-pointer hover:border-gray-300 transition-colors">
                   <div className="bg-gray-50 aspect-[3/4] mb-3 overflow-hidden relative">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={`https://via.placeholder.com/300x400?text=Product+${i}`} alt="Product" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                    <img src={`https://placehold.co/300x400/eeeeee/999999?text=Product+${i}`} alt="Product" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                     <div className="absolute top-2 left-2 bg-black text-white text-[10px] font-bold px-2 py-1 uppercase tracking-wider">
                       -20%
                     </div>
