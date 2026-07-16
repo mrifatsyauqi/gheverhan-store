@@ -17,8 +17,9 @@ export default function Home() {
       try {
         const data = await productService.getProducts();
         setProducts(data);
-      } catch (error) {
+      } catch (error: any) {
         console.error("Failed to fetch products", error);
+        alert("Failed to fetch products: " + error.message);
       } finally {
         setLoading(false);
       }
