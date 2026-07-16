@@ -9,14 +9,18 @@ import { Button } from '@/components/ui/button';
 export function Navbar() {
     const { getTotalItems, toggleCart } = useCartStore();
     const [isScrolled, setIsScrolled] = React.useState(false);
+    const [mounted, setMounted] = React.useState(false);
 
     React.useEffect(() => {
+        setMounted(true);
         const handleScroll = () => {
             setIsScrolled(window.scrollY > 0);
         };
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
+
+    const cartCount = mounted ? getTotalItems() : 0;
 
     return (
         <header className={`sticky top-0 z-30 w-full transition-all duration-200 border-b ${isScrolled ? 'bg-white shadow-sm' : 'bg-white/80 backdrop-blur-md'}`}>
@@ -55,24 +59,24 @@ export function Navbar() {
                     <Button variant="ghost" size="icon">
                         <Bell className="w-5 h-5" />
                     </Button>
-                    <Link href="/account" passHref legacyBehavior>
+                    <Link href="/account">
                         <Button variant="ghost" size="icon" className="hidden sm:inline-flex">
                             <User className="w-5 h-5" />
                         </Button>
                     </Link>
                     <Button variant="ghost" size="icon" className="relative md:hidden" onClick={toggleCart}>
                         <ShoppingCart className="w-5 h-5" />
-                        {getTotalItems() > 0 && (
+                        {cartCount > 0 && (
                             <span className="absolute top-1 right-1 w-4 h-4 bg-red-500 text-white text-[10px] font-bold flex items-center justify-center rounded-full">
-                                {getTotalItems()}
+                                {cartCount}
                             </span>
                         )}
                     </Button>
                     <Button variant="ghost" size="icon" className="relative hidden md:inline-flex" onClick={toggleCart}>
                         <ShoppingCart className="w-5 h-5" />
-                        {getTotalItems() > 0 && (
+                        {cartCount > 0 && (
                             <span className="absolute top-1 right-1 w-4 h-4 bg-red-500 text-white text-[10px] font-bold flex items-center justify-center rounded-full">
-                                {getTotalItems()}
+                                {cartCount}
                             </span>
                         )}
                     </Button>

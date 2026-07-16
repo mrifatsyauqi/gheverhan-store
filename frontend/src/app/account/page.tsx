@@ -4,6 +4,8 @@ import React, { useEffect, useState } from 'react';
 import { useAuthStore } from '@/store/auth-store';
 import { authService } from '@/services/auth.service';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { Navbar } from '@/components/Navbar';
 import { User, LogOut, Package, Heart, MapPin, Settings } from 'lucide-react';
 
 export default function AccountPage() {
@@ -37,6 +39,8 @@ export default function AccountPage() {
   };
 
   return (
+    <>
+    <Navbar />
     <div className="bg-gray-50 min-h-screen py-8 pb-24 md:pb-8">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         
@@ -104,9 +108,9 @@ export default function AccountPage() {
               <div className="text-center py-12">
                 <Package className="h-12 w-12 mx-auto text-gray-300 mb-3" />
                 <p className="text-gray-500">Belum ada pesanan saat ini.</p>
-                <button className="mt-4 px-6 py-2 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-colors">
+                <Link href="/" className="mt-4 inline-block px-6 py-2 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-colors">
                   Mulai Belanja
-                </button>
+                </Link>
               </div>
             </div>
           </div>
@@ -114,5 +118,6 @@ export default function AccountPage() {
         </div>
       </div>
     </div>
+    </>
   );
 }
