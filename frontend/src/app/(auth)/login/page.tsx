@@ -31,7 +31,13 @@ export default function LoginPage() {
       await authService.login(data);
       router.push('/account');
     } catch (err: any) {
-      setError(err.response?.data?.message || err.response?.data?.errors?.email?.[0] || 'Gagal login. Silakan coba lagi.');
+      const data = err.response?.data;
+      if (data?.errors) {
+        const firstErrorKey = Object.keys(data.errors)[0];
+        setError(data.errors[firstErrorKey][0]);
+      } else {
+        setError(data?.message || 'Gagal login. Silakan coba lagi.');
+      }
     } finally {
       setLoading(false);
     }

@@ -11,7 +11,7 @@ import Link from 'next/link';
 const registerSchema = z.object({
   name: z.string().min(2, 'Nama minimal 2 karakter'),
   email: z.string().email('Alamat email tidak valid'),
-  password: z.string().min(6, 'Password minimal 6 karakter'),
+  password: z.string().min(8, 'Password minimal 8 karakter'),
   password_confirmation: z.string()
 }).refine((data) => data.password === data.password_confirmation, {
   message: "Konfirmasi password tidak cocok",
@@ -36,7 +36,14 @@ export default function RegisterPage() {
       await authService.register(data);
       router.push('/account');
     } catch (err: any) {
-      setError(err.response?.data?.message || err.response?.data?.errors?.email?.[0] || 'Gagal mendaftar. Silakan coba lagi.');
+      const data = err.response?.data;
+      if (data?.errors) {
+        // Extract the first error message from the errors object
+        const firstErrorKey = Object.keys(data.errors)[0];
+        setError(data.errors[firstErrorKey][0]);
+      } else {
+        setError(data?.message || 'Gagal mendaftar. Silakan coba lagi.');
+      }
     } finally {
       setLoading(false);
     }
