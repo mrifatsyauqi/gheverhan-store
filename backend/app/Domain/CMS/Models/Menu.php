@@ -1,0 +1,18 @@
+<?php
+
+namespace App\Domain\CMS\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Menu extends Model
+{
+    protected $fillable = [
+        'name',
+        'location',
+        'items',
+    ];
+
+    protected $casts = [
+        'items' => 'array',
+    ];
+}

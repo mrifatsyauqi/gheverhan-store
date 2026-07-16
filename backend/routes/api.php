@@ -11,6 +11,18 @@ Route::post('/login', [\App\Http\Controllers\AuthController::class, 'login']);
 Route::post('/forgot-password', [\App\Http\Controllers\PasswordResetController::class, 'sendResetLinkEmail']);
 Route::post('/reset-password', [\App\Http\Controllers\PasswordResetController::class, 'reset']);
 
+// Public CMS & Builder Routes
+Route::prefix('v1/cms')->group(function () {
+    Route::get('/pages', [\App\Http\Controllers\PageController::class, 'index']);
+    Route::get('/pages/{slug}', [\App\Http\Controllers\PageController::class, 'show']);
+    Route::get('/menus', [\App\Http\Controllers\MenuController::class, 'index']);
+    Route::get('/menus/{location}', [\App\Http\Controllers\MenuController::class, 'show']);
+});
+
+Route::prefix('v1/builder')->group(function () {
+    Route::get('/theme/active', [\App\Http\Controllers\ThemeController::class, 'getActive']);
+});
+
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/user', function (Request $request) {
         return response()->json([
@@ -27,4 +39,14 @@ Route::middleware(['auth:sanctum'])->group(function () {
         ->name('verification.send');
     Route::get('/email/verify/{id}/{hash}', [\App\Http\Controllers\EmailVerificationController::class, 'verify'])
         ->name('verification.verify');
+
+    // Admin CMS & Builder Routes
+    Route::prefix('v1/cms')->group(function () {
+        Route::post('/pages', [\App\Http\Controllers\PageController::class, 'store']);
+        Route::post('/menus', [\App\Http\Controllers\MenuController::class, 'store']);
+    });
+
+    Route::prefix('v1/builder')->group(function () {
+        Route::post('/theme', [\App\Http\Controllers\ThemeController::class, 'store']);
+    });
 });
