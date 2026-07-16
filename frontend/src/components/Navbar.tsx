@@ -5,11 +5,14 @@ import Link from 'next/link';
 import { ShoppingCart, Search, Menu, User, Heart } from 'lucide-react';
 import { useCartStore } from '@/store/cart-store';
 import { Button } from '@/components/ui/button';
+import { useRouter } from 'next/navigation';
 
 export function Navbar() {
     const { getTotalItems, toggleCart } = useCartStore();
     const [isScrolled, setIsScrolled] = React.useState(false);
     const [mounted, setMounted] = React.useState(false);
+    const [searchQuery, setSearchQuery] = React.useState('');
+    const router = useRouter();
 
     React.useEffect(() => {
         setMounted(true);
@@ -21,6 +24,13 @@ export function Navbar() {
     }, []);
 
     const cartCount = mounted ? getTotalItems() : 0;
+
+    const handleSearch = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (searchQuery.trim()) {
+            router.push(`/search?q=${encodeURIComponent(searchQuery)}`);
+        }
+    };
 
     const navLinks = [
         { label: 'Kategori', href: '/categories' },
@@ -68,19 +78,25 @@ export function Navbar() {
 
                 {/* Desktop & Mobile: Right Actions */}
                 <div className="flex items-center space-x-1 sm:space-x-3 md:flex-none">
-                    <Button variant="ghost" size="icon" className="md:hidden">
-                        <Search className="w-5 h-5" />
-                    </Button>
+                    <Link href="/search" passHref legacyBehavior>
+                        <Button variant="ghost" size="icon" className="md:hidden">
+                            <Search className="w-5 h-5" />
+                        </Button>
+                    </Link>
                     
                     {/* Desktop Search Input */}
-                    <div className="hidden md:flex relative w-48 lg:w-64">
+                    <form onSubmit={handleSearch} className="hidden md:flex relative w-48 lg:w-64">
                         <input 
                             type="text" 
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
                             placeholder="Cari produk, kategori, dll" 
                             className="w-full h-9 pl-9 pr-4 rounded-full border border-gray-300 bg-gray-50 focus:bg-white focus:outline-none focus:ring-1 focus:ring-primary transition-all text-xs"
                         />
-                        <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
-                    </div>
+                        <button type="submit" className="absolute left-3 top-2.5">
+                            <Search className="h-4 w-4 text-gray-400" />
+                        </button>
+                    </form>
 
                     <Link href="/account/wishlist" className="hidden sm:inline-flex">
                         <Button variant="ghost" size="icon">

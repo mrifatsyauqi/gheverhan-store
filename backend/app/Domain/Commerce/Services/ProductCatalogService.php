@@ -10,11 +10,19 @@ class ProductCatalogService
     /**
      * Get all published products with relations.
      */
-    public function getPublishedProducts(): Collection
+    public function getPublishedProducts(?string $search = null): Collection
     {
-        return Product::with(['category', 'brand', 'variants'])
-            ->where('status', 'published')
-            ->get();
+        $query = Product::with(['category', 'brand', 'variants'])
+            ->where('status', 'published');
+
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('description', 'like', "%{$search}%");
+            });
+        }
+
+        return $query->get();
     }
 
     /**

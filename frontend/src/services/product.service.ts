@@ -23,8 +23,9 @@ export interface Product {
 }
 
 export const productService = {
-    async getProducts(): Promise<Product[]> {
-        const response = await apiClient.get('/v1/commerce/products');
+    async getProducts(search?: string): Promise<Product[]> {
+        const url = search ? `/v1/commerce/products?q=${encodeURIComponent(search)}` : '/v1/commerce/products';
+        const response = await apiClient.get(url);
         return response.data.data;
     },
 
