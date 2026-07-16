@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { ShoppingCart, Search, Menu, User, Bell } from 'lucide-react';
+import { ShoppingCart, Search, Menu, User, Heart } from 'lucide-react';
 import { useCartStore } from '@/store/cart-store';
 import { Button } from '@/components/ui/button';
 
@@ -22,60 +22,82 @@ export function Navbar() {
 
     const cartCount = mounted ? getTotalItems() : 0;
 
+    const navLinks = [
+        { label: 'Kategori', href: '/categories' },
+        { label: 'Wanita', href: '/categories/wanita' },
+        { label: 'Pria', href: '/categories/pria' },
+        { label: 'Anak', href: '/categories/anak' },
+        { label: 'Sale', href: '/categories/sale' },
+        { label: 'New In', href: '/categories/new-in' },
+    ];
+
     return (
-        <header className={`sticky top-0 z-30 w-full transition-all duration-200 border-b ${isScrolled ? 'bg-white shadow-sm' : 'bg-white/80 backdrop-blur-md'}`}>
+        <header className={`sticky top-0 z-30 w-full transition-all duration-200 border-b ${isScrolled ? 'bg-white shadow-sm' : 'bg-white/90 backdrop-blur-md'}`}>
+            {/* Desktop Top Bar (Optional: Free Shipping Banner) */}
+            <div className="hidden md:block bg-primary text-white text-xs text-center py-1.5 font-medium">
+                Gratis Ongkir ke Seluruh Indonesia untuk Pesanan di atas Rp 500.000
+            </div>
+
             <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-                {/* Mobile Menu Toggle */}
+                {/* Mobile: Left Hamburger */}
                 <div className="md:hidden flex items-center">
                     <Button variant="ghost" size="icon">
                         <Menu className="w-5 h-5" />
                     </Button>
                 </div>
 
-                {/* Logo */}
-                <div className="flex-1 md:flex-none text-center md:text-left">
-                    <Link href="/" className="text-2xl font-bold tracking-tighter">
+                {/* Mobile: Center Logo / Desktop: Left Logo */}
+                <div className="flex-1 md:flex-none text-center md:text-left flex justify-center md:justify-start">
+                    <Link href="/" className="text-2xl font-bold tracking-tighter font-heading">
                         GHEVERHAN
                     </Link>
                 </div>
 
-                {/* Search Bar - Hidden on mobile, visible on tablet+ */}
-                <div className="hidden md:flex flex-1 max-w-xl mx-8">
-                    <div className="relative w-full">
-                        <input 
-                            type="text" 
-                            placeholder="Search premium products..." 
-                            className="w-full h-10 pl-10 pr-4 rounded-full border border-gray-300 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all text-sm"
-                        />
-                        <Search className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
-                    </div>
-                </div>
+                {/* Desktop: Center Navigation Links */}
+                <nav className="hidden md:flex flex-1 justify-center space-x-8">
+                    {navLinks.map((link) => (
+                        <Link 
+                            key={link.label} 
+                            href={link.href}
+                            className="text-sm font-medium text-gray-900 hover:text-gray-500 transition-colors uppercase tracking-widest"
+                        >
+                            {link.label}
+                        </Link>
+                    ))}
+                </nav>
 
-                {/* Actions */}
-                <div className="flex items-center space-x-1 sm:space-x-2">
+                {/* Desktop & Mobile: Right Actions */}
+                <div className="flex items-center space-x-1 sm:space-x-3 md:flex-none">
                     <Button variant="ghost" size="icon" className="md:hidden">
                         <Search className="w-5 h-5" />
                     </Button>
-                    <Button variant="ghost" size="icon">
-                        <Bell className="w-5 h-5" />
-                    </Button>
-                    <Link href="/account">
-                        <Button variant="ghost" size="icon" className="hidden sm:inline-flex">
+                    
+                    {/* Desktop Search Input */}
+                    <div className="hidden md:flex relative w-48 lg:w-64">
+                        <input 
+                            type="text" 
+                            placeholder="Cari produk, kategori, dll" 
+                            className="w-full h-9 pl-9 pr-4 rounded-full border border-gray-300 bg-gray-50 focus:bg-white focus:outline-none focus:ring-1 focus:ring-primary transition-all text-xs"
+                        />
+                        <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
+                    </div>
+
+                    <Link href="/account/wishlist" className="hidden sm:inline-flex">
+                        <Button variant="ghost" size="icon">
+                            <Heart className="w-5 h-5" />
+                        </Button>
+                    </Link>
+                    
+                    <Link href="/account" className="hidden sm:inline-flex">
+                        <Button variant="ghost" size="icon">
                             <User className="w-5 h-5" />
                         </Button>
                     </Link>
-                    <Button variant="ghost" size="icon" className="relative md:hidden" onClick={toggleCart}>
+
+                    <Button variant="ghost" size="icon" className="relative" onClick={toggleCart}>
                         <ShoppingCart className="w-5 h-5" />
                         {cartCount > 0 && (
-                            <span className="absolute top-1 right-1 w-4 h-4 bg-red-500 text-white text-[10px] font-bold flex items-center justify-center rounded-full">
-                                {cartCount}
-                            </span>
-                        )}
-                    </Button>
-                    <Button variant="ghost" size="icon" className="relative hidden md:inline-flex" onClick={toggleCart}>
-                        <ShoppingCart className="w-5 h-5" />
-                        {cartCount > 0 && (
-                            <span className="absolute top-1 right-1 w-4 h-4 bg-red-500 text-white text-[10px] font-bold flex items-center justify-center rounded-full">
+                            <span className="absolute top-1 right-1 w-4 h-4 bg-primary text-white text-[10px] font-bold flex items-center justify-center rounded-full">
                                 {cartCount}
                             </span>
                         )}
