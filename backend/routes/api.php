@@ -28,6 +28,7 @@ Route::prefix('v1/commerce')->group(function () {
     Route::get('/products', [\App\Http\Controllers\ProductController::class, 'index']);
     Route::get('/products/{slug}', [\App\Http\Controllers\ProductController::class, 'show']);
     Route::post('/cart/validate', [\App\Http\Controllers\CartController::class, 'validateCart']);
+    Route::post('/checkout', [\App\Http\Controllers\OrderController::class, 'checkout']);
 });
 
 Route::middleware(['auth:sanctum'])->group(function () {

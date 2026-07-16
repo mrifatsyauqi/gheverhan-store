@@ -4,9 +4,11 @@ import React from 'react';
 import { useCartStore } from '@/store/cart-store';
 import { Button } from '@/components/ui/button';
 import { X, Trash2, Plus, Minus } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 export function CartDrawer() {
     const { items, isOpen, toggleCart, updateQuantity, removeItem, getTotalPrice } = useCartStore();
+    const router = useRouter();
 
     if (!isOpen) return null;
 
@@ -89,8 +91,8 @@ export function CartDrawer() {
                         size="lg"
                         disabled={items.length === 0}
                         onClick={() => {
-                            // TODO: Proceed to checkout
-                            alert('Checkout feature coming soon!');
+                            toggleCart();
+                            router.push('/checkout');
                         }}
                     >
                         Checkout
