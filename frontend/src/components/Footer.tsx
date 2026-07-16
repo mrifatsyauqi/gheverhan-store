@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { Truck, ShieldCheck, CreditCard, HeadphonesIcon, Instagram, Facebook, Twitter, Youtube } from 'lucide-react';
+import { Truck, ShieldCheck, CreditCard, HeadphonesIcon } from 'lucide-react';
 
 export function Footer() {
     return (
@@ -48,17 +48,17 @@ export function Footer() {
                                 Desain modern, elegan, dan mobile-first untuk pengalaman belanja yang premium. Elevate Your Everyday Style.
                             </p>
                             <div className="flex space-x-4">
-                                <a href="#" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors">
-                                    <Instagram className="w-5 h-5" />
+                                <a href="#" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors text-xs font-bold">
+                                    IG
                                 </a>
-                                <a href="#" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors">
-                                    <Facebook className="w-5 h-5" />
+                                <a href="#" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors text-xs font-bold">
+                                    FB
                                 </a>
-                                <a href="#" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors">
-                                    <Twitter className="w-5 h-5" />
+                                <a href="#" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors text-xs font-bold">
+                                    X
                                 </a>
-                                <a href="#" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors">
-                                    <Youtube className="w-5 h-5" />
+                                <a href="#" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors text-xs font-bold">
+                                    YT
                                 </a>
                             </div>
                         </div>

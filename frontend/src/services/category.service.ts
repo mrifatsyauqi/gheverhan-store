@@ -1,4 +1,4 @@
-import { api } from './api';
+import { apiClient } from './api-client';
 
 export interface Category {
     id: number;
@@ -12,12 +12,12 @@ export interface Category {
 
 export const categoryService = {
     async getCategories(): Promise<Category[]> {
-        const response = await api.get('/v1/commerce/categories');
+        const response = await apiClient.get('/v1/commerce/categories');
         return response.data.data;
     },
 
     async getCategoryBySlug(slug: string): Promise<Category> {
-        const response = await api.get(`/v1/commerce/categories/${slug}`);
+        const response = await apiClient.get(`/v1/commerce/categories/${slug}`);
         return response.data.data;
     }
 };
